@@ -1,5 +1,10 @@
 class TicketService {
 
+    private static readonly TICKET_LOWER_BOUND = 1000000;
+    private static readonly TICKET_SPACE = 3000000;
+    // private static readonly TICKET_POOL_SIZE = 300000;
+    private static readonly TICKET_POOL_SIZE = 200000;
+    // private static readonly TICKET_POOL_SIZE = 50;
     static _instance: TicketService;
     private ticketPool: number[];
 
@@ -13,22 +18,24 @@ class TicketService {
             return ticket;
         });
 
-        console.debug("constructor()", "this.ticketPool", this.ticketPool);
+        // console.debug("constructor()", "this.ticketPool", this.ticketPool);
     }
 
+    // shuffle is too slow
     public shuffle() {
-        console.debug("shuffle()", "before", this.ticketPool);
+        // console.debug("shuffle()", "before", this.ticketPool);
         this.ticketPool.sort(() => Math.random() > 0.5 ? 1 : -1);
-        console.debug("shuffle()", "after", this.ticketPool);
+        // console.debug("shuffle()", "after", this.ticketPool);
     }
 
     public drawTicket(): number {
-        const ticket = this.ticketPool.pop();
+        const randIdx = Math.floor(Math.random() * this.ticketPool.length);
+        const ticket = this.ticketPool[randIdx];
+        this.ticketPool.splice(randIdx, 1);
         if (ticket === undefined) {
             throw "Ticket pool is empty";
         }
 
-        console.debug("drawTicket()", ticket);
         return ticket;
     }
 
@@ -41,17 +48,17 @@ class TicketService {
 
             return ticket;
         });
-        console.debug("allocateTickets", tickets);
+        // console.debug("getTickets()", tickets);
         return tickets;
     }
 
     private generateTicket(): number {
-        return 100000 + Math.floor(Math.random() * 40000);
+        return TicketService.TICKET_LOWER_BOUND + Math.floor(Math.random() * TicketService.TICKET_SPACE);
     }
 
     public static get instance(): TicketService {
         if (!TicketService._instance) {
-            TicketService._instance = new TicketService(20);
+            TicketService._instance = new TicketService(TicketService.TICKET_POOL_SIZE);
         }
 
         return TicketService._instance;
