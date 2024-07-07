@@ -1,11 +1,11 @@
-class TicketService {
+class DrawService {
 
     private static readonly TICKET_LOWER_BOUND = 1000000;
     private static readonly TICKET_SPACE = 3000000;
     // private static readonly TICKET_POOL_SIZE = 300000;
     private static readonly TICKET_POOL_SIZE = 200000;
     // private static readonly TICKET_POOL_SIZE = 50;
-    static _instance: TicketService;
+    static _instance: DrawService;
     private ticketPool: number[];
 
     private constructor(totalTickets: number) {
@@ -53,17 +53,17 @@ class TicketService {
     }
 
     private generateTicket(): number {
-        return TicketService.TICKET_LOWER_BOUND + Math.floor(Math.random() * TicketService.TICKET_SPACE);
+        return DrawService.TICKET_LOWER_BOUND + Math.floor(Math.random() * DrawService.TICKET_SPACE);
     }
 
-    public static get instance(): TicketService {
-        if (!TicketService._instance) {
-            TicketService._instance = new TicketService(TicketService.TICKET_POOL_SIZE);
+    public static get instance(): DrawService {
+        if (!DrawService._instance) {
+            DrawService._instance = new DrawService(DrawService.TICKET_POOL_SIZE);
         }
 
-        return TicketService._instance;
+        return DrawService._instance;
     }
 
 }
 
-export default TicketService;
+export default DrawService;

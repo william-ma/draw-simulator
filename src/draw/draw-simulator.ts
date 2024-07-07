@@ -1,8 +1,8 @@
-import TicketService from "./ticket-service"
+import DrawService from "./draw-service"
 
 const ticketsToOwn = 10;
 const ticketsToDraw = 10;
-const ticketService = TicketService.instance;
+const ticketService = DrawService.instance;
 
 function findWinningTicket(winningTickets: number[], tickets: number[]): number | undefined {
     for (const winningTicket of winningTickets) {
